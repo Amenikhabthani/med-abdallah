@@ -196,6 +196,85 @@
   });
 
   /**
+   * Testimonial preview toggle
+   */
+  document.querySelectorAll('.testimonial-toggle').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const testimonialItem = toggle.closest('.testimonial-item');
+      const preview = testimonialItem.querySelector('.testimonial-preview-text');
+      const fullLink = testimonialItem.querySelector('.testimonial-full-link');
+      const isExpanded = preview.classList.toggle('expanded');
+
+      if (fullLink) {
+        fullLink.classList.toggle('is-visible', isExpanded);
+      }
+
+      toggle.textContent = isExpanded ? 'Read Less' : 'Read More';
+      toggle.setAttribute('aria-expanded', String(isExpanded));
+    });
+  });
+
+  /**
+   * Contact form submission with success/error handling
+   */
+  const contactForm = document.querySelector('#contactForm');
+
+  if (contactForm) {
+    const loading = contactForm.querySelector('.loading');
+    const errorMessage = contactForm.querySelector('.error-message');
+    const sentMessage = contactForm.querySelector('.sent-message');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
+      loading.style.display = 'block';
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+      sentMessage.style.display = 'none';
+      submitButton.disabled = true;
+
+      if (contactForm.action.includes('your-form-id')) {
+        loading.style.display = 'none';
+        submitButton.disabled = false;
+        errorMessage.textContent = 'Please configure your Formspree form ID to enable submissions.';
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            contactForm.reset();
+            sentMessage.style.display = 'block';
+            sentMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            throw new Error('Unable to send message');
+          }
+        })
+        .catch(() => {
+          errorMessage.textContent = 'There was an issue sending your message. Please try again later.';
+          errorMessage.style.display = 'block';
+        })
+        .finally(() => {
+          loading.style.display = 'none';
+          submitButton.disabled = false;
+        });
+    });
+  }
+
+  /**
    * Navmenu Scrollspy
    */
   let navmenulinks = document.querySelectorAll('.navmenu a');
