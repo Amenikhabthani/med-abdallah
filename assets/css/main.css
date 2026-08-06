@@ -2286,6 +2286,7 @@ section,
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
   line-height: 1.6;
   margin-bottom: 10px;
@@ -2294,6 +2295,7 @@ section,
 .testimonials .testimonial-item .testimonial-preview-text.expanded {
   display: block;
   -webkit-line-clamp: unset;
+  line-clamp: unset;
   overflow: visible;
 }
 
