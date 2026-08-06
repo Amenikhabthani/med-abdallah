@@ -141,7 +141,10 @@
    * Initiate glightbox
    */
   const glightbox = GLightbox({
-    selector: '.glightbox'
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: false,
+    closeOnOutsideClick: true
   });
 
   /**
