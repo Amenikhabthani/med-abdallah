@@ -229,6 +229,11 @@
     const submitButton = contactForm.querySelector('button[type="submit"]');
 
     contactForm.addEventListener('submit', function(e) {
+      if (contactForm.action.includes('formspree.io')) {
+        // Formspree with reCAPTCHA enabled must submit via a normal POST.
+        return;
+      }
+
       e.preventDefault();
 
       if (!contactForm.checkValidity()) {
@@ -242,14 +247,6 @@
       sentMessage.style.display = 'none';
       submitButton.disabled = true;
 
-      if (contactForm.action.includes('your-form-id')) {
-        loading.style.display = 'none';
-        submitButton.disabled = false;
-        errorMessage.textContent = 'Please configure your Formspree form ID to enable submissions.';
-        errorMessage.style.display = 'block';
-        return;
-      }
-
       fetch(contactForm.action, {
         method: 'POST',
         body: new FormData(contactForm),
@@ -257,17 +254,19 @@
           'Accept': 'application/json'
         }
       })
-        .then(response => {
-          if (response.ok) {
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+          if (ok) {
             contactForm.reset();
             sentMessage.style.display = 'block';
             sentMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          } else {
-            throw new Error('Unable to send message');
+            return;
           }
+          const message = data && data.error ? data.error : data && data.message ? data.message : 'Unable to send message';
+          throw new Error(message);
         })
-        .catch(() => {
-          errorMessage.textContent = 'There was an issue sending your message. Please try again later.';
+        .catch((error) => {
+          errorMessage.textContent = error.message || 'There was an issue sending your message. Please try again later.';
           errorMessage.style.display = 'block';
         })
         .finally(() => {
