@@ -2576,7 +2576,7 @@ section,
   transform: scale(1.05);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1110px) {
   .services .services-showcase .featured-service {
     height: 400px;
     margin-bottom: 2rem;
@@ -2595,7 +2595,7 @@ section,
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 360px) {
   .services {
     padding: 80px 0;
   }
