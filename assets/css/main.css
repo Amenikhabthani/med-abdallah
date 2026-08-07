@@ -2808,7 +2808,362 @@ section,
     margin: 0 auto 30px auto;
   }
 }
+/*--------------------------------------------------------------
+# Brand Wall Section (replaces .compact-brands-section rules —
+# you can delete the old .compact-brands-section block, it's
+# no longer referenced by the new markup)
+--------------------------------------------------------------*/
+.brand-wall-section {
+  padding: 60px 0 50px;
+}
 
+/* Full-bleed: breaks out of .container on purpose so the conveyor
+   feels expansive instead of boxed in like the old strip did */
+.brand-wall {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 10px 0 6px;
+  --fade: 110px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: max-content;
+  padding: 9px 0;
+  will-change: transform;
+}
+
+.brand-row.row-a {
+  animation: brand-scroll-left 38s linear infinite;
+}
+
+.brand-row.row-b {
+  animation: brand-scroll-right 32s linear infinite;
+  margin-top: 20px;
+}
+
+/* Each row pauses independently on hover — lets a visitor actually
+   read a name without freezing the whole wall */
+.brand-row:hover {
+  animation-play-state: paused;
+}
+
+@keyframes brand-scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes brand-scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.brand-card {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 190px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+/* Diagonal shimmer sweep on hover — a small nod to a shine passing
+   over a gym floor tile, kept subtle and only on interaction */
+.brand-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, color-mix(in srgb, var(--accent-color), transparent 75%), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.brand-card:hover::before {
+  left: 130%;
+}
+
+.brand-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--default-color), transparent 90%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 55%);
+}
+
+.brand-card img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition: all 0.35s ease;
+  flex-shrink: 0;
+}
+
+.brand-card .brand-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  font-size: 1.25rem;
+  transition: all 0.35s ease;
+}
+
+.brand-card:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+.brand-card:hover .brand-icon {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.brand-card span:last-child {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  white-space: nowrap;
+}
+
+.brand-wall-note {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-row.row-a,
+  .brand-row.row-b {
+    animation-play-state: paused;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-wall { --fade: 50px; }
+  .brand-card { min-width: 160px; padding: 12px 16px; gap: 10px; }
+  .brand-row { gap: 14px; }
+  .brand-row.row-b { margin-top: 14px; }
+}
+
+/*--------------------------------------------------------------
+# Project Gallery Section (replaces .projects-section rules —
+# the old .project-intro-card / .highlight-image block and the
+# JS show-more/show-less toggle are no longer needed; filtering
+# now does that job)
+--------------------------------------------------------------*/
+.project-gallery-section {
+  padding-top: 40px;
+}
+
+.project-spotlight {
+  display: flex;
+  gap: 32px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.project-spotlight .spotlight-media {
+  flex: 0 0 240px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+.project-spotlight .spotlight-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-spotlight .spotlight-content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.project-spotlight .spotlight-source-icon {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  font-size: 1.4rem;
+  color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.project-spotlight .spotlight-caption {
+  margin: 0;
+  padding-right: 30px;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--default-color);
+}
+
+.project-spotlight .spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-spotlight .spotlight-tags span {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.project-spotlight .spotlight-stats {
+  display: flex;
+  gap: 32px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.project-spotlight .spotlight-stats div {
+  text-align: left;
+}
+
+.project-spotlight .spotlight-stats strong {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--accent-color);
+  line-height: 1;
+}
+
+.project-spotlight .spotlight-stats span {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+@media (max-width: 768px) {
+  .project-spotlight {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .project-spotlight .spotlight-media {
+    flex-basis: auto;
+    max-height: 260px;
+  }
+
+  .project-spotlight .spotlight-stats {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}
+
+/* Category pill on every project card — mirrors the filter tabs,
+   so scanning the grid tells you the filter before you click it */
+.project-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--heading-color), transparent 15%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.image-count-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--heading-color), transparent 15%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Pause the in-card photo cycle on hover so people can actually look —
+   original template never did this */
+.portfolio-card:hover .freemotion-track {
+  animation-play-state: paused;
+}
+
+.featured-project .image-container {
+  aspect-ratio: 16 / 9;
+}
+
+.featured-project .content h3 {
+  font-size: 24px;
+}
+
+/* Filter tabs — reuses .portfolio-filters styling already in the sheet,
+   this just adds the live count bubble */
+.filter-count {
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--default-color), transparent 45%);
+  margin-left: 2px;
+}
+
+.portfolio-filters li.filter-active .filter-count {
+  color: var(--accent-color);
+}
+
+.project-more-note {
+  margin-top: 36px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+}
+
+.project-more-note a {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .project-stat-ribbon {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+
+  .project-stat-ribbon .ribbon-stats {
+    gap: 24px;
+  }
+}
 /*--------------------------------------------------------------
 # Faq Section
 --------------------------------------------------------------*/
@@ -3203,9 +3558,183 @@ section,
   letter-spacing: 0.3px;
 }
 
-@media (min-width: 992px) {
-  .portfolio .portfolio-grid {
-    grid-template-columns: repeat(3, 1fr);
+.compact-brands-section .brands-strip {
+  overflow-x: auto;
+  padding: 14px 0 4px;
+}
+
+.compact-brands-section .brands-scroll {
+  display: flex;
+  gap: 16px;
+  min-width: max-content;
+  padding-bottom: 8px;
+  animation: brands-slide 24s linear infinite;
+}
+
+.compact-brands-section .brands-scroll:hover {
+  animation-play-state: paused;
+}
+
+.compact-brands-section .brand-logo-card {
+  flex: 0 0 auto;
+  min-width: 170px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(17, 10, 6, 0.08);
+  border-radius: 22px;
+  padding: 18px 16px;
+  box-shadow: 0 20px 45px rgba(17, 10, 6, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.compact-brands-section .brand-logo-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(17, 10, 6, 0.18);
+}
+
+.compact-brands-section .brand-logo-card img,
+.compact-brands-section .brand-logo-card .brand-icon-placeholder {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.compact-brands-section .brand-logo-card img {
+  object-fit: contain;
+}
+
+.compact-brands-section .brand-logo-card .brand-icon-placeholder {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.compact-brands-section .brand-logo-card span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+}
+
+@keyframes brands-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.compact-brands-section .brands-line-note {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+.projects-section .project-highlight {
+  gap: 28px;
+}
+
+.projects-section .highlight-image {
+  position: relative;
+}
+
+.projects-section .highlight-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(23, 63, 95, 0.92);
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+}
+
+.projects-section .project-intro-card {
+  background: var(--surface-color);
+  border: 1px solid rgba(17, 10, 6, 0.08);
+  border-radius: 24px;
+  padding: 26px;
+  box-shadow: 0 18px 40px rgba(17, 10, 6, 0.04);
+}
+
+.projects-section .project-intro-caption {
+  margin: 0 0 18px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--default-color);
+  letter-spacing: 0.2px;
+}
+
+.projects-section .project-benefits-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.projects-section .project-benefits-list li {
+  position: relative;
+  padding-left: 28px;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+  line-height: 1.6;
+}
+
+.projects-section .project-benefits-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.project-grid .portfolio-card {
+  padding: 18px 18px 22px;
+}
+
+.project-grid .portfolio .content h3,
+.project-grid .portfolio-card .content h3 {
+  font-size: 18px;
+}
+
+.project-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.project-hidden {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .projects-section .project-highlight {
+    display: block;
+  }
+
+  .projects-section .highlight-badge {
+    top: 12px;
+    left: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .compact-brands-section .brands-scroll {
+    animation: none;
+    gap: 14px;
+  }
+
+  .compact-brands-section .brand-logo-card {
+    min-width: 150px;
+    padding: 16px 14px;
   }
 }
 

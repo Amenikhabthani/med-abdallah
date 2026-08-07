@@ -299,4 +299,85 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
+  /**
+   * Project grid show more / show less toggle
+   */
+  const projectToggleBtn = document.getElementById('toggle-projects');
+  if (projectToggleBtn) {
+    const projectCards = Array.from(document.querySelectorAll('#project-references .portfolio-item'));
+    const visibleCount = 4;
+    const hiddenCards = projectCards.slice(visibleCount);
+
+    hiddenCards.forEach(card => card.classList.add('project-hidden'));
+
+    projectToggleBtn.addEventListener('click', () => {
+      const expanded = projectToggleBtn.getAttribute('aria-expanded') === 'true';
+      hiddenCards.forEach(card => card.classList.toggle('project-hidden', expanded));
+      projectToggleBtn.textContent = expanded ? 'Show More Projects' : 'Show Less';
+      projectToggleBtn.setAttribute('aria-expanded', String(!expanded));
+    });
+  }
+
+})();
+/**
+ * Additions for the split Brands Wall + Project Gallery sections.
+ * Append inside (or after) the existing main.js IIFE — it's written
+ * as its own self-contained block so it's safe to include either way.
+ *
+ * Note: project filtering itself needs no code here — it's handled
+ * by the generic `.isotope-layout` initializer that already exists
+ * in main.js. This file only adds two small enhancements:
+ *   1. Pause offscreen project videos (saves battery/CPU on long scrolls)
+ *   2. Fill in the live (count) badge on each filter tab
+ *
+ * You can safely delete the old "#toggle-projects" show more/less
+ * block from main.js — that id no longer exists in the new markup,
+ * so it's dead code (harmless if left, but no longer doing anything).
+ */
+(function() {
+  "use strict";
+
+  /**
+   * Pause project videos once they scroll out of view, resume when
+   * they scroll back in. With 9+ project cards (and more coming),
+   * autoplaying every video at once is unnecessary battery/CPU load.
+   */
+  const galleryVideos = document.querySelectorAll('#project-references video');
+  if (galleryVideos.length && 'IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const vid = entry.target;
+        if (entry.isIntersecting) {
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    galleryVideos.forEach((vid) => videoObserver.observe(vid));
+  }
+
+  /**
+   * Live counts on the project filter tabs, e.g. "Flooring Installs (5)".
+   * Reads straight from the DOM, so it never goes stale as projects
+   * are added or re-tagged — no manual number-updating required.
+   */
+  const filterList = document.querySelector('#project-references .isotope-filters');
+  if (filterList) {
+    const allItems = document.querySelectorAll('#project-references .portfolio-item');
+
+    filterList.querySelectorAll('li[data-filter]').forEach((li) => {
+      const filter = li.getAttribute('data-filter');
+      const countEl = li.querySelector('.filter-count');
+      if (!countEl) return;
+
+      const count = filter === '*'
+        ? allItems.length
+        : document.querySelectorAll('#project-references ' + filter).length;
+
+      countEl.textContent = '(' + count + ')';
+    });
+  }
+
 })();
