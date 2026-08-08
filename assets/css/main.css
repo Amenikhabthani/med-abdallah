@@ -3116,11 +3116,7 @@ section,
   font-weight: 600;
 }
 
-/* Pause the in-card photo cycle on hover so people can actually look —
-   original template never did this */
-.portfolio-card:hover .freemotion-track {
-  animation-play-state: paused;
-}
+
 
 .featured-project .image-container {
   aspect-ratio: 16 / 9;
@@ -3474,7 +3470,11 @@ section,
   object-fit: cover;
   flex-shrink: 0;
 }
-
+/* Pause the in-card photo cycle on hover so people can actually look —
+   original template never did this */
+.portfolio-card:hover .freemotion-track {
+  animation-play-state: paused;
+}
 @keyframes freemotion-scroll {
   0% {
     transform: translateX(0);
@@ -3568,14 +3568,7 @@ section,
 .portfolio .content .portfolio-link-row a:hover {
   text-decoration: underline;
 }
-/* Smooth Isotope filter transitions — project gallery */
-.project-references .isotope-container {
-  transition: height 0.4s ease;
-}
 
-.project-references .isotope-item {
-  transition-timing-function: ease;
-}
 
 .compact-brands-section .brands-strip {
   overflow-x: auto;

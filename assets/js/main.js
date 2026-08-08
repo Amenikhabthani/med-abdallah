@@ -1,11 +1,3 @@
-/**
-* Template Name: LeadPage
-* Template URL: https://bootstrapmade.com/leadpage-bootstrap-landing-page-template/
-* Updated: Aug 12 2025 with Bootstrap v5.3.7
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
 (function() {
   "use strict";
 
@@ -147,48 +139,55 @@
     closeOnOutsideClick: true
   });
 /**
-   * Init isotope layout and filters — simple fade-up-from-left transition
-   */
-  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
-    let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
-    let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
-    let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
+ * Init isotope layout and filters (Fixed for smooth initial animations)
+ */
+document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
+  let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
+  let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
+  let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
-    let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
-        itemSelector: '.isotope-item',
-        layoutMode: layout,
-        filter: filter,
-        sortBy: sort,
-        percentPosition: true,
-        transitionDuration: '0.4s',
-        hiddenStyle: {
-          opacity: 0,
-          transform: 'translateX(-30px) translateY(20px)'
-        },
-        visibleStyle: {
-          opacity: 1,
-          transform: 'translateX(0) translateY(0)'
-        }
-      });
+  const container = isotopeItem.querySelector('.isotope-container');
+  if (!container) return;
+
+  // Use imagesLoaded properly to ensure heights are calculated BEFORE Isotope positions items
+  imagesLoaded(container, function() {
+    let initIsotope = new Isotope(container, {
+      itemSelector: '.isotope-item',
+      layoutMode: layout,
+      filter: filter,
+      sortBy: sort,
+      transitionDuration: '0.4s' // Smooth explicit transition duration
     });
 
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
-      filters.addEventListener('click', function() {
-        if (!initIsotope) return;
+    // Handle lazy-loaded images dynamically without breaking grid math
+    const imgLoadHandler = imagesLoaded(container);
+    imgLoadHandler.on('progress', function() {
+      initIsotope.layout();
+    });
 
-        isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
+    // Handle Filter Clicks
+    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filterBtn) {
+      filterBtn.addEventListener('click', function() {
+        // Update Active Class
+        let activeBtn = isotopeItem.querySelector('.isotope-filters .filter-active');
+        if (activeBtn) activeBtn.classList.remove('filter-active');
         this.classList.add('filter-active');
 
-        initIsotope.arrange({ filter: this.getAttribute('data-filter') });
-        if (typeof aosInit === 'function') {
-          aosInit();
-        }
+        // Remove AOS attributes from items so AOS doesn't fight Isotope transforms
+        container.querySelectorAll('.isotope-item').forEach(el => {
+          el.removeAttribute('data-aos');
+          el.classList.remove('aos-animate');
+        });
+
+        // Trigger Isotope filtering smoothly
+        initIsotope.arrange({
+          filter: this.getAttribute('data-filter')
+        });
+
       }, false);
     });
-
   });
+});
 
   /**
    * Correct scrolling position upon page load for URLs containing hash links.
