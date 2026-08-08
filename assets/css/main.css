@@ -3558,6 +3558,20 @@ section,
   letter-spacing: 0.3px;
 }
 
+.portfolio .content .portfolio-link-row {
+  margin-top: 10px;
+}
+
+.portfolio .content .portfolio-link-row a {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.portfolio .content .portfolio-link-row a:hover {
+  text-decoration: underline;
+}
+
 .compact-brands-section .brands-strip {
   overflow-x: auto;
   padding: 14px 0 4px;
