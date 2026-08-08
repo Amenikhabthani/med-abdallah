@@ -146,9 +146,8 @@
     loop: false,
     closeOnOutsideClick: true
   });
-
-  /**
-   * Init isotope layout and filters
+/**
+   * Init isotope layout and filters — simple fade-up-from-left transition
    */
   document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
     let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
@@ -161,17 +160,28 @@
         itemSelector: '.isotope-item',
         layoutMode: layout,
         filter: filter,
-        sortBy: sort
+        sortBy: sort,
+        percentPosition: true,
+        transitionDuration: '0.4s',
+        hiddenStyle: {
+          opacity: 0,
+          transform: 'translateX(-30px) translateY(20px)'
+        },
+        visibleStyle: {
+          opacity: 1,
+          transform: 'translateX(0) translateY(0)'
+        }
       });
     });
 
     isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
       filters.addEventListener('click', function() {
+        if (!initIsotope) return;
+
         isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
         this.classList.add('filter-active');
-        initIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
+
+        initIsotope.arrange({ filter: this.getAttribute('data-filter') });
         if (typeof aosInit === 'function') {
           aosInit();
         }

@@ -3468,10 +3468,7 @@ section,
 .portfolio .freemotion-track {
   display: flex;
   width: max-content;
-  animation: freemotion-scroll 10s linear infinite;
-}
-
-.portfolio .freemotion-track img {
+  animation: none;
   width: 280px;
   height: 100%;
   object-fit: cover;
@@ -3570,6 +3567,14 @@ section,
 
 .portfolio .content .portfolio-link-row a:hover {
   text-decoration: underline;
+}
+/* Smooth Isotope filter transitions — project gallery */
+.project-references .isotope-container {
+  transition: height 0.4s ease;
+}
+
+.project-references .isotope-item {
+  transition-timing-function: ease;
 }
 
 .compact-brands-section .brands-strip {
