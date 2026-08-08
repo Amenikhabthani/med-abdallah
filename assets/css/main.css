@@ -2644,7 +2644,7 @@ section,
   }
 
   .services .services-showcase .services-list .service-item {
-    padding: 1.25rem;
+    padding: 0.5rem;
     flex-direction: column;
     text-align: center;
   }
@@ -2670,8 +2670,8 @@ section,
   }
 
   .services .additional-services .service-card .card-image {
-    height: 200px;
-    min-height: 200px;
+    height: 280px;
+    min-height: 280px;
   }
 
   .services .additional-services .service-card .card-body {
@@ -3768,8 +3768,11 @@ section,
     top: 12px;
     left: 12px;
   }
+    .services .additional-services .service-card .card-image {
+      height: 350px;
+      min-height: 350px
 }
-
+}
 @media (max-width: 768px) {
   .compact-brands-section .brands-scroll {
     animation: none;
