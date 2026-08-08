@@ -982,6 +982,7 @@ section,
 .hero {
   padding: 120px 0 60px 0;
   min-height: 100vh;
+  min-height: 100svh; /* fixes mobile browser URL-bar height jump on iOS/Android */
   position: relative;
   display: flex;
   align-items: center;
@@ -1035,22 +1036,35 @@ section,
 }
 
 @media (max-width: 576px) {
+  .header .top-row .logo .sitename {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+  margin: 0;
+}
   .hero h1 {
     font-size: 2rem;
   }
 }
 
 .hero p {
-  font-size: 1.25rem;
-  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
   color: color-mix(in srgb, var(--default-color), transparent 30%);
   line-height: 1.6;
 }
-
+.header .social-links a {
+  color: var(--heading-color);
+  padding: 0 8px;
+  display: inline-block;
+  font-size: 15px;
+  transition: 0.3s;
+}
 @media (max-width: 768px) {
   .hero p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -1062,13 +1076,13 @@ section,
 }
 
 .hero .hero-buttons .btn {
-  padding: 0.875rem 2rem;
-  font-weight: 600;
+  padding: 0.800rem 1.75rem;
+  font-weight: 550;
   border-radius: 50px;
   transition: all 0.3s ease;
   text-decoration: none;
   border: 2px solid transparent;
-  font-size: 1rem;
+  font-size: 0.75rem;
 }
 
 .hero .hero-buttons .btn.btn-primary {
@@ -1411,6 +1425,7 @@ section,
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 10px;
 }
@@ -2611,11 +2626,11 @@ section,
   }
 
   .services .services-showcase .services-list .service-item {
-    padding: 2rem;
+    padding: 1rem;
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 767px) {
   .services {
     padding: 80px 0;
   }
@@ -2629,7 +2644,7 @@ section,
   }
 
   .services .services-showcase .services-list .service-item {
-    padding: 1.5rem;
+    padding: 1.25rem;
     flex-direction: column;
     text-align: center;
   }
@@ -2667,6 +2682,15 @@ section,
     margin-bottom: 0;
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+}
+
+/* Tablet-only refinement: services-showcase height/padding already
+   drop at 1110px, but the stacked/centered mobile treatment above
+   should not kick in until true phone widths (<=767px) */
+@media (min-width: 768px) and (max-width: 1110px) {
+  .services .services-showcase .services-list .service-item {
+    padding: 1.5rem 1.75rem;
   }
 }
 
@@ -2806,6 +2830,14 @@ section,
   .pricing .box {
     max-width: 100%;
     margin: 0 auto 30px auto;
+  }
+
+  .pricing .pricing-item {
+    padding: 28px 24px;
+  }
+
+  .pricing h4 {
+    font-size: 38px;
   }
 }
 /*--------------------------------------------------------------
