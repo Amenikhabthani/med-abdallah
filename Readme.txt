@@ -1,6 +1,7 @@
-Thanks for downloading this template!
+# Hey there! 👋
 
-Template Name: LeadPage
-Template URL: https://bootstrapmade.com/leadpage-bootstrap-landing-page-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
+
+Check out Mohamed's work and projects on his website:  
+🌐 [my-website](https://mohamedebenabdallah.github.io/Mohamed-Eben-Abdallah/)  
+
+Thanks for stopping by! 😊
